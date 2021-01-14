@@ -1,20 +1,6 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
-    // id 'com.novoda.bintray-release'
-}
-
-apply plugin: 'com.novoda.bintray-release'
-
-// 配置2
-publish {
-    userOrg = 'plum'             // Binary用户名
-    repoName = 'animation'          // Binary上的刚才新建的仓库名（Repository）
-    groupId = 'com.mei.open'        // 依赖名compile 'x:y:z'中的包名x
-    artifactId = 'animation'        // 依赖名compile 'x:y:z'中的项目名y
-    publishVersion = '1.0.0'          // 依赖名compile 'x:y:z'中的版本号z
-    desc = 'animation'            // 对该开源组件的说明
-    website = 'https://github.com/Carson-Ho/DIY_View'  // VCS地址，即填写项目上传的Github地址
 }
 
 android {
@@ -44,6 +30,11 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    lintOptions {
+        // true--错误发生后停止gradle构建
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -52,7 +43,10 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
+
+apply from: 'maven.gradle'
