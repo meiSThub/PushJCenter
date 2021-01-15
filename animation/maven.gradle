@@ -1,0 +1,35 @@
+apply plugin: 'com.github.panpf.bintray-publish'
+
+//下面这些配置换成你自己的即可
+publish {
+    userOrg = 'plum'             // Binary用户名
+    repoName = 'animation'          // Binary上的刚才新建的仓库名（Repository）
+    groupId = 'com.mei.open'        // 依赖名compile 'x:y:z'中的包名x
+    artifactId = 'animation'        // 依赖名compile 'x:y:z'中的项目名y
+    publishVersion = '1.0.1'          // 依赖名compile 'x:y:z'中的版本号z
+    desc = 'animation'            // 对该开源组件的说明
+    website = 'https://github.com/meiSThub/PushJCenter'  // VCS地址，即填写项目上传的Github地址
+}
+
+afterEvaluate {
+
+    def properties = new Properties()
+    properties.load(file("$rootDir/local.properties").newDataInputStream())
+    def bintrayName = properties.getProperty("bintrayUserName")// bintray注册的用户名
+    def bintrayKey = properties.getProperty("bintrayAppKey")// bintray 生成的appKey
+    println "bintrayName=$bintrayName;bintrayKey=$bintrayKey"
+
+    def task = tasks.findByName('uploadArchives')
+    println "task=$task"
+    def rootPath = rootDir
+    println "rootPath=$rootPath"
+//  ./gradlew clean build bintrayUpload -PbintrayUser="" -PbintrayKey="" -PdryRun=false
+    task.doLast {
+        def command = "$rootPath/gradlew clean build bintrayUpload -PbintrayUser=${bintrayName} -PbintrayKey=${bintrayKey} -PdryRun=false"
+
+        def execute = command.execute()
+        println execute.inputStream.text
+        execute.waitFor()
+        println "上传成功"
+    }
+}
