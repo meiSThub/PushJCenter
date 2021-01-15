@@ -11,20 +11,21 @@ publish {
     website = 'https://github.com/meiSThub/PushJCenter'  // VCS地址，即填写项目上传的Github地址
 }
 
-project.ext {
-    bintrayUser = "plum"
-    bintrayKey = "20ea7bb824f2da916efccca064ba45ac138fc028"
-}
-
-
 afterEvaluate {
+
+    def properties = new Properties()
+    properties.load(file("$rootDir/local.properties").newDataInputStream())
+    def bintrayName = properties.getProperty("bintrayUserName")
+    def bintrayKey = properties.getProperty("bintrayAppKey")
+    println "bintrayName=$bintrayName;bintrayKey=$bintrayKey"
+
     def task = tasks.findByName('uploadArchives')
     println "task=$task"
     def rootPath = rootDir
     println "rootPath=$rootPath"
-//  ./gradlew clean build bintrayUpload -PbintrayUser="plum" -PbintrayKey="20ea7bb824f2da916efccca064ba45ac138fc028" -PdryRun=false
+//  ./gradlew clean build bintrayUpload -PbintrayUser="" -PbintrayKey="" -PdryRun=false
     task.doLast {
-        def command = "$rootPath/gradlew clean build bintrayUpload -PbintrayUser=${project.ext.bintrayUser} -PbintrayKey=${project.ext.bintrayKey} -PdryRun=false"
+        def command = "$rootPath/gradlew clean build bintrayUpload -PbintrayUser=${bintrayName} -PbintrayKey=${bintrayKey} -PdryRun=false"
 
         def execute = command.execute()
         println execute.inputStream.text
