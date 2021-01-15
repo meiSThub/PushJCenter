@@ -15,8 +15,8 @@ afterEvaluate {
 
     def properties = new Properties()
     properties.load(file("$rootDir/local.properties").newDataInputStream())
-    def bintrayName = properties.getProperty("bintrayUserName")
-    def bintrayKey = properties.getProperty("bintrayAppKey")
+    def bintrayName = properties.getProperty("bintrayUserName")// bintray注册的用户名
+    def bintrayKey = properties.getProperty("bintrayAppKey")// bintray 生成的appKey
     println "bintrayName=$bintrayName;bintrayKey=$bintrayKey"
 
     def task = tasks.findByName('uploadArchives')
